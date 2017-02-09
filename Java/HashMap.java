@@ -1,64 +1,40 @@
-//  http://www.jianshu.com/p/94fe92ad945b
-
-//  http://www.jiuzhang.com/solutions/mini-cassandra/
-
-/**
- * 本代码由九章算法编辑提供。版权所有，转发请注明出处。
- * - 九章算法致力于帮助更多中国人找到好的工作，教师团队均来自硅谷和国内的一线大公司在职工程师。
- * - 现有的面试培训课程包括：九章算法班，系统设计班，算法强化班，Java入门与基础算法班，Android 项目实战班，Big Data 项目实战班，
- * - 更多详情请见官方网站：http://www.jiuzhang.com/?source=code
- */
-
-
-
-class Column {
-    public int key;
-    public String value;
-    public Column(int key, String value) {
-        this.key = key;
-        this.value = value;
-    }
- }
+//  http://www.codeceo.com/article/java-hashmap-core.html#0-tsina-1-31472-397232819ff9a47a7b7e80a40613cfe1
  
-public class MiniCassandra {
+public class HashMap {
 
-    private Map<String, NavigableMap<Integer, String>> hash;
-    
-    public SimpleCassandra() {
-        // initialize your data structure here.
-        hash = new HashMap<String, NavigableMap<Integer, String>>();
-    }
-    
-    /**
-     * @param raw_key a string
-     * @param column_start an integer
-     * @param column_end an integer
-     * @return void
-     */
-    public void insert(String raw_key, int column_key, String column_value) {
-        // Write your code here
-        if (!hash.containsKey(raw_key)) {
-            hash.put(raw_key, new TreeMap<Integer, String>());
+    public int hashCode() {
+        int h = hash;
+        if (h == 0) {
+            int off = offset;
+            char val[] = value;
+            int len = count;
+            for (int i = 0; i < len; i++) {
+                h = 31 * h + val[off++];
+            }
+            hash = h;
         }
-        hash.get(raw_key).put(column_key, column_value);
+        return h;
     }
 
-    /**
-     * @param raw_key a string
-     * @param column_start an integer
-     * @param column_end an integer
-     * @return a list of Columns
-     */
-    public List<Column> query(String raw_key, int column_start, int column_end) {
-        // Write your code here
-        List<Column> rt = new ArrayList<Column>();
-        if (!hash.containsKey(raw_key)) {
-            return rt;
+    //  transient keyword:  ignore when object is serielized
+    transient Entry[] table;
+    public V put(K key, V value) {
+        if (key == null) {
+            return putForNullKey(value);
         }
-        for (Map.Entry<Integer, String> entry :
-                hash.get(raw_key).subMap(column_start, true, column_end, true).entrySet()) {
-            rt.add(new Column(entry.getKey(), entry.getValue()));
+        int hash = hash(key.hashCode());
+        int i = indexFor(hash, table.length);
+        for (Entry<K, V> e = table[i]; e != null; e = e.next) {
+            Object k;
+            if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
+                V oldValue = e.value;
+                e.value = value;
+                e.recordAccess(this);
+                return oldValue;
+            }
         }
-        return rt;
+        modCount++;
+        addEntry(hash, key, value, i);
+        return null;
     }
 }
