@@ -2,6 +2,9 @@
 Question: 
 A class inherits from 2 interfaces and both the interfaces have the same method name. How should the class implement
 the method for both the interfaces?
+
+If you want to make one of the interface method, the default, then implement that method normally and the other
+interface method explicitly. This makes the default method to be accessible thru class instance.
  */
 
 using System;
