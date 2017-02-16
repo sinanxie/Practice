@@ -9,6 +9,15 @@ Otherwise the progrom becomes less
 	Readable
 	Maintainable
 
+1. Enums are enumerations
+2. Enums are strongly typed constants. Hence, an explicit cast is needed to convert from enum type to an integral type 
+and vice versa. Also, an enum of one type cannot be implicitly assgined to an enum of another type even though the
+underlying value of their members are the same.
+3. The default underlying type of an enum is int.
+4. The default value for first element is ZERO and gets incremented by 1.
+5. It is possible to customize the underlying type and values.
+6. Enum keyword(all small letters) is used to create enumerations, where as Enum class, contains static GetValues() and
+GetNames() methods which can be used to list Enum underlying type values and Names.
 
  */
 
@@ -23,19 +32,19 @@ public class Enums
 		customers[0] = new Customer
 		{
 			Name = "Mark",
-			Gender = 1
+			Gender = Gender.Male
 		};
 
 		customers[1] = new Customer
 		{
 			Name = "Mary",
-			Gender = 2
+			Gender = Gender.Female
 		};
 
 		customers[2] = new Customer
 		{
 			Name = "Sam",
-			Gender = 0
+			Gender = Gender.Unknow
 		};
 
 		foreach (Customer customer in customers)
@@ -44,20 +53,27 @@ public class Enums
 		}
 	}
 
-	public static string GetGender (int gender)
+	public static string GetGender (Gender gender)
 	{
 		switch(gender)
 		{
-			case 0:
+			case Gender.Unknow:
 				return "Unknow";
-			case 1:
+			case Gender.Male:
 				return "Male";
-			case 2:
+			case Gender.Female:
 				return "Female";
 			default:
 				return "Invalid data detected";
 		}
 	}
+}
+
+public enum Gender
+{
+	Unknow,
+	Male,
+	Female
 }
 
 //	0 - Unknow
@@ -66,5 +82,7 @@ public class Enums
 public class Customer
 {
 	public string Name { get; set; }
-	public int Gender { get; set; }
+	public Gender Gender { get; set; }
 }
+
+
