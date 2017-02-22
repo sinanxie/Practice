@@ -18,7 +18,7 @@ underlying value of their members are the same.
 5. It is possible to customize the underlying type and values.
 6. Enum keyword(all small letters) is used to create enumerations, where as Enum class, contains static GetValues() and
 GetNames() methods which can be used to list Enum underlying type values and Names.
-7. Enums are value types  
+7. Enums are value types   
 
  */
 
